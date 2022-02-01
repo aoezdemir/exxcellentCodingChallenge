@@ -1,4 +1,4 @@
-package de.exxellent.challenge.modul;
+package de.exxellent.challenge.dataAccessLayer.modul;
 
 
 import javax.persistence.Entity;
@@ -9,10 +9,10 @@ public class Weather {
 
     @Id
     private Integer day;
-    private Integer mxt;
-    private Integer mnt;
+    private Double mxt;
+    private Double mnt;
 
-    public Weather(Integer day, Integer mxt, Integer mnt) {
+    public Weather(Integer day, Double mxt, Double mnt) {
         this.day = day;
         this.mxt = mxt;
         this.mnt = mnt;
@@ -29,19 +29,19 @@ public class Weather {
         this.day = day;
     }
 
-    public Integer getMxt() {
+    public Double getMxt() {
         return mxt;
     }
 
-    public void setMxt(Integer mxt) {
+    public void setMxt(Double mxt) {
         this.mxt = mxt;
     }
 
-    public Integer getMnt() {
+    public Double getMnt() {
         return mnt;
     }
 
-    public void setMnt(Integer mnt) {
+    public void setMnt(Double mnt) {
         this.mnt = mnt;
     }
 
