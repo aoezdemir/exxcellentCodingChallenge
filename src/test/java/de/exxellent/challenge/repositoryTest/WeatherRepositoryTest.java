@@ -1,20 +1,26 @@
-package de.exxellent.challenge;
-import de.exxellent.challenge.serviceLayer.serviceImpl.ReaderImpl;
+package de.exxellent.challenge.repositoryTest;
+import de.exxellent.challenge.service.serviceImpl.FileServiceImpl;
 import org.assertj.core.api.Assertions;
-import de.exxellent.challenge.dataAccessLayer.modul.Weather;
-import de.exxellent.challenge.dataAccessLayer.repository.WeatherRepository;
+import de.exxellent.challenge.modul.Weather;
+import de.exxellent.challenge.repository.WeatherRepository;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -25,10 +31,27 @@ public class WeatherRepositoryTest {
     @Autowired
     WeatherRepository weatherRepository;
 
-    @InjectMocks
-    ReaderImpl reader;
+    private static MockMultipartFile multipartFileCSV;
 
-    private File csvFile = new File("/Users/aliozdemir/Documents/challenge/src/main/resources/weather.csv");
+
+    @InjectMocks
+    private FileServiceImpl fileService;
+
+
+    @BeforeAll
+    public static void init() {
+        Path path = Paths.get("/Users/aliozdemir/Documents/challenge/src/main/resources/weather.csv");
+        String name = "weather.csv";
+        String originalFileName = "weather.csv";
+        String contentType = "text/csv";
+        byte[] content = null;
+        try {
+            content = Files.readAllBytes(path);
+        } catch (final IOException e) {
+        }
+        multipartFileCSV = new MockMultipartFile(name,
+                originalFileName, contentType, content);
+    }
 
     @Test
     @Sql({"/weatherTestData.sql"})
@@ -51,8 +74,8 @@ public class WeatherRepositoryTest {
     }
 
     @Test
-    void saveAllTest() throws FileNotFoundException {
-        ArrayList<Weather> weatherArrayList = reader.csvReader(csvFile);
+    void saveAllTest() throws IOException {
+        ArrayList<Weather> weatherArrayList = fileService.readCSVToWeatherObject(multipartFileCSV);
         weatherRepository.saveAll(weatherArrayList);
 
         // get saved Data

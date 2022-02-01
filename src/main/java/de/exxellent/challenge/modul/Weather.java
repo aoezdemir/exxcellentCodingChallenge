@@ -1,4 +1,4 @@
-package de.exxellent.challenge.dataAccessLayer.modul;
+package de.exxellent.challenge.modul;
 
 
 import javax.persistence.Entity;

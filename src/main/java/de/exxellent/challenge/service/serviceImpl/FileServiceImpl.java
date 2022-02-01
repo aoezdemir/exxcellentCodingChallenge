@@ -1,33 +1,46 @@
-package de.exxellent.challenge.serviceLayer.serviceImpl;
+package de.exxellent.challenge.service.serviceImpl;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import de.exxellent.challenge.dataAccessLayer.modul.Weather;
-import de.exxellent.challenge.dataAccessLayer.repository.WeatherRepository;
-import de.exxellent.challenge.serviceLayer.serviceInterface.ReaderInterface;
+import de.exxellent.challenge.modul.Weather;
+import de.exxellent.challenge.repository.WeatherRepository;
+import de.exxellent.challenge.service.serviceInterface.FileServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ReaderImpl implements ReaderInterface {
+public class FileServiceImpl implements FileServiceInterface {
 
     @Autowired
     private WeatherRepository weatherRepository;
 
-    public ReaderImpl() {
+    public FileServiceImpl() {
     }
 
     @Override
-    public ArrayList<Weather> csvReader(File csvFile) throws FileNotFoundException {
+    public boolean hasCSVFormat(MultipartFile file) {
+        if(file.getContentType().equals("text/csv")) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+    @Override
+    public ArrayList readCSVToWeatherObject(MultipartFile csvFile) throws IOException {
         ArrayList<Weather> weatherArrayList= new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(csvFile));) {
+        try {
+            Reader reader = new InputStreamReader(csvFile.getInputStream());
+            CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
             List<String[]> allElements = csvReader.readAll();
-            allElements.remove(0);
             for (String[] values : allElements) {
                 ArrayList<Double> row = new ArrayList();
                 for (int i = 0; i < 3; i++) {
@@ -44,9 +57,7 @@ public class ReaderImpl implements ReaderInterface {
     }
 
     @Override
-    public void injectData(ArrayList<Weather> weatherArrayList, WeatherRepository weatherRepository) throws FileNotFoundException {
+    public void injectData(ArrayList<Weather> weatherArrayList) throws FileNotFoundException {
         weatherRepository.saveAll(weatherArrayList);
     }
-
-
 }
