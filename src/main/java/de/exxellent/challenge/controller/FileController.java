@@ -14,17 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(path = "/injectData")
+@RequestMapping(path = "/injectCSVData")
 public class FileController {
     @Autowired
     FileServiceImpl fileService;
 
-    @GetMapping(path="/greeting")
-    public String greet() {
-        return "Hi ich bin Hafti.";
-    }
-
-    @PostMapping(path = "/injectWeatherData")
+    @PostMapping(path = "/weatherData")
     public ResponseEntity<ResponseMessage> injectData(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
         if(fileService.hasCSVFormat(file)) {

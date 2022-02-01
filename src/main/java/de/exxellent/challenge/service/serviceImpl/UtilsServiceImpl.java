@@ -1,21 +1,25 @@
-package de.exxellent.challenge.serviceLayer.serviceImpl;
+package de.exxellent.challenge.service.serviceImpl;
 
-import de.exxellent.challenge.dataAccessLayer.modul.Weather;
-import de.exxellent.challenge.dataAccessLayer.repository.WeatherRepository;
-import de.exxellent.challenge.serviceLayer.serviceInterface.UtilsInterface;
+import de.exxellent.challenge.modul.Weather;
+import de.exxellent.challenge.repository.WeatherRepository;
+import de.exxellent.challenge.service.serviceInterface.UtilsServiceInterface;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UtilsImpl implements UtilsInterface {
+@Service
+public class UtilsServiceImpl implements UtilsServiceInterface {
 
-
+    @Autowired
+    WeatherRepository weatherRepository;
 
     @Override
-    public int getDayWithSmallestTemperatureSpread( WeatherRepository weatherRepository) {
+    public int dayWithSmallestTemperatureSpread() {
         BidiMap tmpSpreadMap = new DualHashBidiMap();
         Iterable<Weather> weathers = weatherRepository.findAll();
         List<Double> tmpSpreadCollection = new ArrayList<>();
