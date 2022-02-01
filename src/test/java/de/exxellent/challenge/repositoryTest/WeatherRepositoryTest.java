@@ -1,4 +1,6 @@
 package de.exxellent.challenge.repositoryTest;
+import de.exxellent.challenge.modul.Football;
+import de.exxellent.challenge.repository.FootballRepository;
 import de.exxellent.challenge.service.serviceImpl.FileServiceImpl;
 import org.assertj.core.api.Assertions;
 import de.exxellent.challenge.modul.Weather;
@@ -31,16 +33,15 @@ public class WeatherRepositoryTest {
     @Autowired
     WeatherRepository weatherRepository;
 
+    @InjectMocks
     private static MockMultipartFile multipartFileCSV;
-
 
     @InjectMocks
     private FileServiceImpl fileService;
 
-
     @BeforeAll
     public static void init() {
-        Path path = Paths.get("/Users/aliozdemir/Documents/challenge/src/main/resources/weather.csv");
+        Path path = Paths.get("src/main/resources/football.csv");
         String name = "weather.csv";
         String originalFileName = "weather.csv";
         String contentType = "text/csv";
@@ -74,7 +75,7 @@ public class WeatherRepositoryTest {
     }
 
     @Test
-    void saveAllTest() throws IOException {
+    void saveAllTest(){
         ArrayList<Weather> weatherArrayList = fileService.readCSVToWeatherObject(multipartFileCSV);
         weatherRepository.saveAll(weatherArrayList);
 
@@ -92,4 +93,6 @@ public class WeatherRepositoryTest {
         }
 
     }
+
+
 }

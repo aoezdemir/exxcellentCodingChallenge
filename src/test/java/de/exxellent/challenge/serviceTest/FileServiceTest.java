@@ -27,6 +27,7 @@ import java.util.List;import org.springframework.mock.web.MockMultipartFile;
 public class FileServiceTest {
 
     private static MockMultipartFile multipartFileCSV;
+    private static MockMultipartFile multipartFileCSVFootball;
     private static MockMultipartFile multipartFileNoCSV;
 
     @InjectMocks
@@ -35,7 +36,7 @@ public class FileServiceTest {
 
     @BeforeAll
     public static void init() {
-        Path path = Paths.get("/Users/aliozdemir/Documents/challenge/src/main/resources/weather.csv");
+        Path path = Paths.get("src/main/resources/weather.csv");
         String name = "weather.csv";
         String originalFileName = "weather.csv";
         String contentType = "text/csv";
@@ -54,8 +55,20 @@ public class FileServiceTest {
             content = Files.readAllBytes(path);
         } catch (final IOException e) {
         }
-        multipartFileNoCSV = new MockMultipartFile(name,
-                originalFileName, contentType, content);
+        multipartFileNoCSV = new MockMultipartFile(name, originalFileName, contentType, content);
+
+        // for Football
+        Path pathFootball = Paths.get("src/main/resources/football.csv");
+        String nameFootball = "football.csv";
+        String originalFileNameFootball = "football.csv";
+        String contentTypeFootball = "text/csv";
+        byte[] contentFootball = null;
+        try {
+            contentFootball = Files.readAllBytes(pathFootball);
+        } catch (final IOException e) {
+        }
+        multipartFileCSVFootball = new MockMultipartFile(nameFootball,
+                originalFileNameFootball, contentTypeFootball, contentFootball);
     }
 
     @Test
@@ -70,7 +83,7 @@ public class FileServiceTest {
 
     @Test
     void readCSVToWeatherObjectTest() throws IOException, CsvException {
-        File file = new File("/Users/aliozdemir/Documents/challenge/src/main/resources/weather.csv");
+        File file = new File("src/main/resources/weather.csv");
         ArrayList<Weather> result =  fileService.readCSVToWeatherObject(multipartFileCSV);
 
         // get length of CSV File
@@ -83,6 +96,19 @@ public class FileServiceTest {
         Assertions.assertThat(result.size()).isEqualTo(lengthOfData);
     }
 
+    @Test
+    void readCSVToFootballObjectTest() throws IOException, CsvException {
+        File file = new File("src/main/resources/football.csv");
+        ArrayList<Weather> result =  fileService.readCSVToFootballObject(multipartFileCSVFootball);
 
+        // get length of CSV File
+        CSVReader csvReader = new CSVReader(new FileReader(file));
+        List<String[]> allElements = csvReader.readAll();
+        allElements.remove(0);
+        int lengthOfData = allElements.size();
+
+        //test compare length of CSV File to length of resulting ArrayList<Weather>
+        Assertions.assertThat(result.size()).isEqualTo(lengthOfData);
+    }
 
 }

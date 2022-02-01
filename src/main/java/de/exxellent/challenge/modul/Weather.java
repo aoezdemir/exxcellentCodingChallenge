@@ -12,13 +12,13 @@ public class Weather {
     private Double mxt;
     private Double mnt;
 
+    public Weather() {
+    }
+
     public Weather(Integer day, Double mxt, Double mnt) {
         this.day = day;
         this.mxt = mxt;
         this.mnt = mnt;
-    }
-
-    public Weather() {
     }
 
     public Integer getDay() {
