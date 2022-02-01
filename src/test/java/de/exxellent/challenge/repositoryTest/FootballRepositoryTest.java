@@ -53,16 +53,16 @@ public class FootballRepositoryTest {
                 originalFileNameFootball, contentTypeFootball, contentFootball);
     }
 
-    @Test
-    @Sql({"/footballTestData.sql"})
-    void createTest() {
-        Football footballToCompare = new Football(1, "Liverpool", 67, 30);
-        Optional<Football> football = footballRepository.findById(1);
-
-        Assertions.assertThat(football.get().getTeam()).isEqualTo(footballToCompare.getTeam());
-        Assertions.assertThat(football.get().getGoals_made()).isEqualTo(footballToCompare.getGoals_made());
-        Assertions.assertThat(football.get().getGoals_allowed()).isEqualTo(footballToCompare.getGoals_allowed());
-    }
+//    @Test
+//    @Sql({"/footballTestData.sql"})
+//    void createTest() {
+//        Football footballToCompare = new Football(1, "Liverpool", 67, 30);
+//        Optional<Football> football = footballRepository.findById(1);
+//
+//        Assertions.assertThat(football.get().getTeam()).isEqualTo(footballToCompare.getTeam());
+//        Assertions.assertThat(football.get().getGoals_made()).isEqualTo(footballToCompare.getGoals_made());
+//        Assertions.assertThat(football.get().getGoals_allowed()).isEqualTo(footballToCompare.getGoals_allowed());
+//    }
 
     @Test
     @Sql({"/footballTestData2.sql"})
