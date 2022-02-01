@@ -4,15 +4,12 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
 import de.exxellent.challenge.dataAccessLayer.modul.Weather;
-import de.exxellent.challenge.dataAccessLayer.repository.WeatherRepository;
 import de.exxellent.challenge.serviceLayer.serviceImpl.ReaderImpl;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 

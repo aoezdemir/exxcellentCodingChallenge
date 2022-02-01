@@ -7,11 +7,13 @@ import de.exxellent.challenge.dataAccessLayer.repository.WeatherRepository;
 import de.exxellent.challenge.serviceLayer.serviceInterface.ReaderInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ReaderImpl implements ReaderInterface {
 
     @Autowired
@@ -42,7 +44,7 @@ public class ReaderImpl implements ReaderInterface {
     }
 
     @Override
-    public void injectData(ArrayList<Weather> weatherArrayList) throws FileNotFoundException {
+    public void injectData(ArrayList<Weather> weatherArrayList, WeatherRepository weatherRepository) throws FileNotFoundException {
         weatherRepository.saveAll(weatherArrayList);
     }
 
